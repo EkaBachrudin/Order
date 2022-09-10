@@ -1,30 +1,16 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Swal from 'sweetalert2'
-import { useState, useEffect } from 'react'
 import { io } from 'socket.io-client'
 import axios from 'axios'
 
 
 function ListOrder() {
   const [orders, setOrders] = useState([])
-  const [status, setStatus] = useState("");
+  var status = "";
 
   useEffect(()=>{
     getOrders();
   }, []);
-
-  async function getOrders() {
-      const response = await axios.get('http://localhost:5000/orders');
-      const ordersData = response.data;
-      setOrders(ordersData)
-  }
-
-  const updateStatus = async (id) => {
-    await axios.patch(`http://localhost:5000/orders/${id}`, {
-      status
-    })
-    getOrders();
-  }
 
   useEffect(() => {
     const socket = io('ws://localhost:5000')
@@ -47,7 +33,25 @@ function ListOrder() {
 
   }, [])
 
+  async function getOrders() {
+      const response = await axios.get('http://localhost:5000/orders');
+      const ordersData = response.data;
+      setOrders(ordersData)
+  }
+
+  const updateStatus = async (id) => {
+    await axios.patch(`http://localhost:5000/orders/${id}`, {
+      status
+    })
+    getOrders();
+  }
+
   const changeStatus = (x, id) => {
+    if(x == "Waiting"){
+      status = "Process"
+    }else if(x == "Process"){
+      status = "Done";
+    }
     Swal.fire({
       title: 'Do you want to proccess this order?',
       showCancelButton: true,
@@ -55,14 +59,11 @@ function ListOrder() {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        if(x === "Waiting"){
-          setStatus("Process");
-        }else if(x === "Process"){
-          setStatus("Done");
-        }
         updateStatus(id);
         Swal.fire('Greate!', '', 'success')
       }
+      console.log(status);
+      console.log(x);
     })
   }
   return (
@@ -86,7 +87,7 @@ function ListOrder() {
                       order.status == 'Done' ? 'btn-sm btn btn-outline-secondary shadow-sm disabled'
                     : order.status == 'Process' ? 'btn-sm btn btn-outline-success shadow-sm'
                     : 'btn-sm btn btn-outline-warning shadow-sm' } 
-                    onClick={()=>changeStatus(order.status, order._id)}>{order.status}</div>
+                    onClick={() => changeStatus(order.status, order._id)}>{order.status}</div>
                 </td>
               </tr>
           ))}

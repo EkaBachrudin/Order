@@ -51,9 +51,6 @@ app.use(
   TableRoute
   );
 
-app.get('/', (req,res) => {
-  res.send('Hello')
-})
 
 server.listen(PORT, () => {
   console.log(`Server up and running on port ${PORT}`);
