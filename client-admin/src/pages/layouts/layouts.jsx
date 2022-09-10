@@ -15,8 +15,8 @@ function layouts({children, title}) {
     <div>
         <div id="wrapper" className={isActive ? "toggled" : null}>
             <div id="sidebar-wrapper">
-                <ul class="sidebar-nav">
-                    <li class="sidebar-brand">
+                <ul className="sidebar-nav">
+                    <li className="sidebar-brand">
                         <a href="#">
                             Eka Restaurant
                         </a>
@@ -39,7 +39,7 @@ function layouts({children, title}) {
                 </ul>
             </div>
             <div id="page-content-wrapper">
-                <div class="container-fluid">
+                <div className="container-fluid">
                 <MdOutlineMenu onClick={menuToggle}/>
                    {children}
                 </div>

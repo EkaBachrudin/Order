@@ -1,11 +1,53 @@
 import React from 'react'
 import Swal from 'sweetalert2'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { io } from 'socket.io-client'
+import axios from 'axios'
+
 
 function ListOrder() {
-  const [status, setStatus] = useState('Waiting')
+  const [orders, setOrders] = useState([])
+  const [status, setStatus] = useState("");
 
-  const changeStatus = () => {
+  useEffect(()=>{
+    getOrders();
+  }, []);
+
+  async function getOrders() {
+      const response = await axios.get('http://localhost:5000/orders');
+      const ordersData = response.data;
+      setOrders(ordersData)
+  }
+
+  const updateStatus = async (id) => {
+    await axios.patch(`http://localhost:5000/orders/${id}`, {
+      status
+    })
+    getOrders();
+  }
+
+  useEffect(() => {
+    const socket = io('ws://localhost:5000')
+
+    socket.on('connnection', () => {
+      console.log('connected to server');
+    })
+
+    socket.on('order-added', (newOrders) => {
+      setOrders(newOrders)
+    })
+
+    socket.on('message', (message) => {
+      console.log(message);
+    })
+
+    socket.on('disconnect', () => {
+      console.log('Socket disconnecting');
+    })
+
+  }, [])
+
+  const changeStatus = (x, id) => {
     Swal.fire({
       title: 'Do you want to proccess this order?',
       showCancelButton: true,
@@ -13,13 +55,13 @@ function ListOrder() {
     }).then((result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-          if(status == "Proccess"){
-            Swal.fire('Done!', '', 'success')
-            setStatus('Done')
-          }else{
-            Swal.fire('Proccess!', '', 'success')
-            setStatus('Proccess')
-          }
+        if(x === "Waiting"){
+          setStatus("Process");
+        }else if(x === "Process"){
+          setStatus("Done");
+        }
+        updateStatus(id);
+        Swal.fire('Greate!', '', 'success')
       }
     })
   }
@@ -32,24 +74,22 @@ function ListOrder() {
           <thead>
             <tr>
               <th>No Order</th>
-              <th>Customer Name</th>
-              <th>Table</th>
               <th>Status</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1234123dasd123</td>
-              <td>Eka Bachrudin</td>
-              <td>Table 08</td>
-              <td>
-                <div className={
-                    status == 'Done' ? 'btn-sm btn btn-outline-secondary shadow-sm disabled'
-                  : status == 'Proccess' ? 'btn-sm btn btn-outline-success shadow-sm'
-                  : 'btn-sm btn btn-outline-warning shadow-sm' } 
-                  onClick={()=>changeStatus()}>{status}</div>
-              </td>
-            </tr>
+          {orders.map((order, index) => (
+              <tr key={order._id}>
+                  <td>{order.no_order}</td>
+                <td>
+                  <div className={
+                      order.status == 'Done' ? 'btn-sm btn btn-outline-secondary shadow-sm disabled'
+                    : order.status == 'Process' ? 'btn-sm btn btn-outline-success shadow-sm'
+                    : 'btn-sm btn btn-outline-warning shadow-sm' } 
+                    onClick={()=>changeStatus(order.status, order._id)}>{order.status}</div>
+                </td>
+              </tr>
+          ))}
           </tbody>
         </table>
         </div>

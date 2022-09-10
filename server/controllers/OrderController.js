@@ -1,4 +1,5 @@
 import Order from "../models/order.js";
+import {io} from '../index.js' 
 
 export const getOrder = async(req, res) => {
     try{
@@ -13,6 +14,8 @@ export const saveOrder = async(req, res) => {
     const order = new Order(req.body);
     try{
         const insertOrder = await order.save();
+        const orders = await Order.find()
+        io.emit('order-added', orders)
         res.status(201).json(insertOrder);
     }catch (error){
         res.status(404).json({message: error.message});
