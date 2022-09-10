@@ -38,25 +38,25 @@ const MenuAdd = () => {
 
   return (
     <Layouts title={"add menu"}>
-        <div class="row my-3">
-            <div class="col-lg-12 d-flex justify-content-between">
+        <div className="row my-3">
+            <div className="col-lg-12 d-flex justify-content-between">
                 <h3>Add Menu</h3>
             </div>
         </div>
-        <div class="row my-3">
-            <div class="col-md-4">
+        <div className="row my-3">
+            <div className="col-md-4">
                 <div className="card shadow">
                     <div className="card-body">
                         <form onSubmit={(event => handleSubmit(event))}>
                             <input 
-                            class="form-control" 
+                            className="form-control" 
                             value={name} 
                             onChange={(e)=> setName(e.target.value)}
                             type="text" 
                             placeholder="Menu Name"/>
                             <br />
                             <input 
-                            class="form-control" 
+                            className="form-control" 
                             value={price} 
                             onChange={(e)=> setPrice(e.target.value)}
                             type="number"

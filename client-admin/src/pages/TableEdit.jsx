@@ -47,18 +47,18 @@ function TableEdit() {
     }
   return (
     <Layouts title={"add menu"}>
-        <div class="row my-3">
-            <div class="col-lg-12 d-flex justify-content-between">
+        <div className="row my-3">
+            <div className="col-lg-12 d-flex justify-content-between">
                 <h3>Edit Table</h3>
             </div>
         </div>
-        <div class="row my-3">
-            <div class="col-md-4">
+        <div className="row my-3">
+            <div className="col-md-4">
                 <div className="card shadow">
                     <div className="card-body">
                         <form onSubmit={updateTable}>
                             <input 
-                            class="form-control" 
+                            className="form-control" 
                             type="text" 
                             value={name} 
                             onChange={(e)=> setName(e.target.value)}

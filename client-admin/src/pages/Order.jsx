@@ -7,8 +7,8 @@ function Order() {
 
   return (
     <Layouts title={"Orders"}>
-        <div class="row my-3">
-            <div class="col-lg-12">
+        <div className="row my-3">
+            <div className="col-lg-12">
                 <h3>All Orders</h3>
             </div>
         </div>

@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 function Menu() {
   return (
     <Layouts title={"menu"}>
-        <div class="row my-3">
-            <div class="col-lg-12 d-flex justify-content-between">
+        <div className="row my-3">
+            <div className="col-lg-12 d-flex justify-content-between">
                 <h3>All Menus</h3>
                 <Link to="/menu/add" className='btn btn-outline-primary shadow'>Add Menu</Link>
             </div>

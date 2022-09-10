@@ -6,8 +6,8 @@ import TableList from '../components/table/TableList'
 function Table() {
   return (
     <Layouts title={"Table"}>
-        <div class="row my-3">
-            <div class="col-lg-12 d-flex justify-content-between">
+        <div className="row my-3">
+            <div className="col-lg-12 d-flex justify-content-between">
                 <h3>All Tables</h3>
                 <Link to="/table/add" className='btn btn-outline-primary shadow'>Add Table</Link>
             </div>
