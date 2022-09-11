@@ -16,14 +16,14 @@ import TableRoute from './routes/TableRoute.js'
 
 const app = express()
 const server = http.createServer(app)
+
 const io = new Server(server, {
-  transports:['polling'],
   cors:{
     cors: {
-      origin: "http://localhost:3000"
+      origin: "http://localhost:3000/order"
     }
   }
-})
+});
 
 io.on('connection', (socket) => {
   console.log('A user is connected');
@@ -50,6 +50,11 @@ app.use(
   ReportRoute,
   TableRoute
   );
+
+  app.use(cors({
+      credentials: true,
+      origin: 'http://localhost:3000'
+  }));
 
 
 server.listen(PORT, () => {

@@ -15,9 +15,7 @@ function ListOrder() {
   useEffect(() => {
     const socket = io('ws://localhost:5000')
 
-    socket.on('connnection', () => {
-      console.log('connected to server');
-    })
+    socket.on("connection", () => console.log("Socket Connected!"));
 
     socket.on('order-added', (newOrders) => {
       setOrders(newOrders)
